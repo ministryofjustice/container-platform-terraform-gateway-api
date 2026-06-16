@@ -14,6 +14,8 @@ variable "base_domain_map" {
   type        = map(string)
   default = {
     "development_cluster" = "development.container-platform.service.justice.gov.uk"
+    "nonlive"             = "nonlive.container-platform.service.justice.gov.uk"
+    "preproduction"       = "preproduction.container-platform.service.justice.gov.uk"
     "live"                = "live.container-platform.service.justice.gov.uk"
   }
 }
