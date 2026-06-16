@@ -12,7 +12,7 @@ resource "kubectl_manifest" "targetgroupconfiguration" {
       namespace: gateway-api-controller
     spec:
       defaultConfiguration:
-        targetType: ip
+        targetType: instance
   YAML
 
   server_side_apply = true
