@@ -23,17 +23,20 @@ resource "helm_release" "envoy_gateway" {
   create_namespace = true
   version          = "v1.4.1"
 
-  set {
-    name  = "deployment.replicas"
-    value = "2"
-  }
-
-  # Expose Envoy Gateway pods via a NodePort service so the ALB (instance mode)
-  # can reach them. Port 80 → container 8080, port 443 → container 8443.
-  set {
-    name  = "config.envoyGateway.gateway.controllerName"
-    value = "gateway.envoyproxy.io/gatewayclass-controller"
-  }
+  values = [
+    yamlencode({
+      deployment = {
+        replicas = 2
+      }
+      config = {
+        envoyGateway = {
+          gateway = {
+            controllerName = "gateway.envoyproxy.io/gatewayclass-controller"
+          }
+        }
+      }
+    })
+  ]
 }
 
 # ── GatewayClass for Envoy ───────────────────────────────────────────────────
