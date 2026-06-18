@@ -29,6 +29,6 @@ output "gateway_namespace" {
 }
 
 output "gateway_api_crd_ids" {
-  description = "Map of installed Gateway API CRD resource IDs"
-  value       = { for k, v in kubectl_manifest.gateway_api_crds : k => v.uid }
+  description = "Gateway API CRDs are managed by the Envoy Gateway helm chart"
+  value       = {}
 }

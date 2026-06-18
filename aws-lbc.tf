@@ -89,7 +89,7 @@ resource "helm_release" "aws_load_balancer_controller" {
   ]
 
   depends_on = [
-    kubectl_manifest.gateway_api_crds,
+    helm_release.envoy_gateway,
     kubernetes_namespace_v1.gateway_api_controller,
     time_sleep.wait_for_pod_identity_association,
   ]
