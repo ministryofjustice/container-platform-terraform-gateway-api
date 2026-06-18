@@ -22,6 +22,7 @@ resource "helm_release" "envoy_gateway" {
   namespace        = "envoy-gateway-system"
   create_namespace = true
   version          = "v1.4.1"
+  skip_crds        = true  # Gateway API CRDs already managed by gateway-api-crds.tf
 
   values = [
     yamlencode({
