@@ -35,6 +35,7 @@ resource "kubectl_manifest" "default_listenerset" {
     cluster_base_domain = local.cluster_base_domain
     gateway_name        = var.gateway_name
     gateway_namespace   = local.gateway_namespace
+    custom_listeners    = var.custom_listeners
   })
 
   server_side_apply = true

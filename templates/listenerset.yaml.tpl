@@ -28,3 +28,21 @@ spec:
         kinds:
           - group: gateway.networking.k8s.io
             kind: HTTPRoute
+%{ for listener in custom_listeners ~}
+    - name: ${listener.name}
+      protocol: HTTPS
+      port: 443
+      hostname: "${listener.hostname}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: ${listener.secret_name}
+      allowedRoutes:
+        namespaces:
+          from: All
+        kinds:
+          - group: gateway.networking.k8s.io
+            kind: HTTPRoute
+%{ endfor ~}
