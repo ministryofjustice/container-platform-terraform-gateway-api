@@ -30,7 +30,7 @@ variable "custom_listeners" {
   description = <<-EOT
     Additional HTTPS listeners for custom domains that fall outside the cluster
     wildcard (*.cluster_base_domain). Each entry adds a listener to the shared
-    ListenerSet; the cert-manager gateway-shim then issues a Certificate for the
+    ListenerSet, the cert-manager gateway-shim then issues a Certificate for the
     listener's hostname into the Secret named here, using the cluster-issuer
     annotation on the ListenerSet. Leave empty (the default) to preserve the
     original single-wildcard-listener behaviour exactly.
