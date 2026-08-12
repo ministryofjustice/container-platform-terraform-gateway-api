@@ -14,7 +14,7 @@ spec:
           volumes:
             - name: dynamic-modules
               image:
-                reference: ghcr.io/tetratelabs/built-on-envoy/composer:0.6.0
+                reference: ghcr.io/tetratelabs/built-on-envoy/composer:0.10.0
                 pullPolicy: IfNotPresent
         container:
           env:
