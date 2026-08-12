@@ -25,3 +25,9 @@ variable "gateway_name" {
   type        = string
   default     = "default"
 }
+
+variable "enable_owasp" {
+  description = "Enable OWASP Coraza WAF (Web Application Firewall) for the Gateway"
+  type        = bool
+  default     = true
+}

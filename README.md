@@ -14,6 +14,7 @@ Each module call creates:
 - A `Gateway` named `<gateway_name>` with an HTTP listener on port 80
 - An `EnvoyProxy` that configures the Envoy data plane as an internet-facing NLB with name `<lb_name_prefix>-envoy-<gateway_name>`
 - A `ListenerSet` named `<gateway_name>-listenerset` with HTTPS on 443 and TLS secret reference `default-certificate`, with hostname `*.${cluster_base_domain}`
+- An `EnvoyExtensionPolicy` for OWASP Coraza WAF (optional, enabled by default via `enable_owasp`)
 
 All resources are created in the namespace specified by `gateway_namespace` (defaults to `envoy-gateway-system`).
 
@@ -32,6 +33,7 @@ module "gateway_api" {
   # gateway_name         = "default"
   # gateway_namespace    = "envoy-gateway-system"
   # envoy_proxy_replicas = 3
+  # enable_owasp         = true
 }
 ```
 
@@ -46,6 +48,7 @@ See the runnable example in `example/main.tf`.
 | `gateway_name` | Name prefix for Gateway, GatewayClass, EnvoyProxy, and ListenerSet resources | `string` | `"default"` | No |
 | `gateway_namespace` | Kubernetes namespace for Gateway resources | `string` | `"envoy-gateway-system"` | No |
 | `envoy_proxy_replicas` | Envoy data plane replica count | `number` | `2` | No |
+| `enable_owasp` | Enable OWASP Coraza WAF (Web Application Firewall) for the Gateway | `bool` | `true` | No |
 
 ## Outputs
 

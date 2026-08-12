@@ -40,3 +40,12 @@ resource "kubectl_manifest" "default_listenerset" {
   server_side_apply = true
   wait              = true
 }
+
+resource "kubernetes_manifest" "default_coraza_waf" {
+  count = var.enable_owasp ? 1 : 0
+
+  manifest = yamldecode(templatefile("${path.module}/templates/coraza-waf.yaml.tpl", {
+    gateway_name      = var.gateway_name
+    gateway_namespace = local.gateway_namespace
+  }))
+}
