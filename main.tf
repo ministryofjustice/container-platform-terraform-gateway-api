@@ -41,6 +41,9 @@ resource "kubectl_manifest" "default_listenerset" {
   wait              = true
 }
 
+# Gateway-level WAF policy with OWASP CRS
+# This applies to ALL routes through the Gateway by default
+# Teams can override this at the HTTPRoute level if needed
 resource "kubernetes_manifest" "default_coraza_waf" {
   count = var.enable_owasp ? 1 : 0
 
