@@ -41,6 +41,17 @@ resource "kubectl_manifest" "default_listenerset" {
   wait              = true
 }
 
+# Platform-managed Coraza configuration
+# Allows the platform team to manage global WAF rule exclusions
+resource "kubernetes_config_map_v1" "coraza_cp_config" {
+  metadata {
+    name      = local.coraza_cp_config.metadata.name
+    namespace = local.coraza_cp_config.metadata.namespace
+  }
+
+  data = local.coraza_cp_config.data
+}
+
 # Gateway-level WAF policy with OWASP CRS
 # This applies to ALL routes through the Gateway by default
 # Teams can override this at the HTTPRoute level if needed
