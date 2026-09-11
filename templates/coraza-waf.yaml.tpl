@@ -18,3 +18,4 @@ spec:
           - SecRuleEngine On
           - Include @crs-setup.conf
           - Include @owasp_crs/*.conf
+          - Include /etc/coraza/cp/coraza-cp.conf
