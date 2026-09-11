@@ -28,6 +28,8 @@ resource "kubectl_manifest" "gateway_proxy" {
 
   server_side_apply = true
   wait              = true
+
+  depends_on = [kubernetes_config_map_v1.coraza_cp_config]
 }
 
 resource "kubectl_manifest" "default_listenerset" {
