@@ -62,4 +62,6 @@ resource "kubernetes_manifest" "default_coraza_waf" {
     gateway_name      = var.gateway_name
     gateway_namespace = local.gateway_namespace
   }))
+
+  depends_on = [kubernetes_config_map_v1.coraza_cp_config]
 }
