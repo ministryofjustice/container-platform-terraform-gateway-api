@@ -16,7 +16,7 @@ spec:
         directives:
           - Include @coraza.conf
           - SecRuleEngine On
-          - SecRule REQUEST_URI "@streq /__cp_waf_test__" "id:900002,phase:1,deny,status:403,log,msg:'cp config test rule fired'"
+          - SecAction "id:900001,phase:1,deny,status:403,log,msg:'inline waf test action fired'"
           - Include @crs-setup.conf
           - Include @owasp_crs/*.conf
           - Include /etc/coraza/cp/coraza-cp.conf
