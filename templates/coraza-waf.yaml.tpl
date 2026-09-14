@@ -16,7 +16,6 @@ spec:
         directives:
           - Include @coraza.conf
           - SecRuleEngine On
-          - SecAction "id:900001,phase:1,deny,status:403,log,msg:'inline waf test action fired'"
           - Include @crs-setup.conf
           - Include @owasp_crs/*.conf
           - Include /etc/coraza/cp/coraza-cp.conf
