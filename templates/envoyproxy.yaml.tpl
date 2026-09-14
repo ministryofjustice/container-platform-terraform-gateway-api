@@ -10,8 +10,29 @@ spec:
       envoyDeployment:
         name: "${gateway_name}-envoy-proxy"
         replicas: ${envoy_proxy_replicas}
+        initContainers:
+          - name: coraza-cp-config-debug
+            image: nicolaka/netshoot:latest
+            imagePullPolicy: IfNotPresent
+            restartPolicy: Always
+            command:
+              - /bin/sh
+              - -c
+              - "trap : TERM INT; sleep infinity & wait"
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+            volumeMounts:
+              - name: coraza-cp-config
+                mountPath: /etc/coraza/cp
+                readOnly: true
 
         pod:
+          annotations:
+            container-platform.service.justice.gov.uk/coraza-cp-config-hash: "${coraza_cp_config_hash}"
+
           volumes:
             - name: dynamic-modules
               image:

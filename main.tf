@@ -20,10 +20,11 @@ resource "kubectl_manifest" "envoy_gateway_instance" {
 
 resource "kubectl_manifest" "gateway_proxy" {
   yaml_body = templatefile("${path.module}/templates/envoyproxy.yaml.tpl", {
-    lb_name_prefix       = var.lb_name_prefix
-    envoy_proxy_replicas = var.envoy_proxy_replicas
-    gateway_name         = var.gateway_name
-    gateway_namespace    = local.gateway_namespace
+    coraza_cp_config_hash = local.coraza_cp_config_hash
+    lb_name_prefix         = var.lb_name_prefix
+    envoy_proxy_replicas   = var.envoy_proxy_replicas
+    gateway_name           = var.gateway_name
+    gateway_namespace      = local.gateway_namespace
   })
 
   server_side_apply = true
@@ -61,8 +62,9 @@ resource "kubernetes_manifest" "default_coraza_waf" {
   count = var.enable_owasp ? 1 : 0
 
   manifest = yamldecode(templatefile("${path.module}/templates/coraza-waf.yaml.tpl", {
-    gateway_name      = var.gateway_name
-    gateway_namespace = local.gateway_namespace
+    coraza_cp_config_hash = local.coraza_cp_config_hash
+    gateway_name          = var.gateway_name
+    gateway_namespace     = local.gateway_namespace
   }))
 
   depends_on = [kubernetes_config_map_v1.coraza_cp_config]
