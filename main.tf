@@ -20,6 +20,7 @@ resource "kubectl_manifest" "envoy_gateway_instance" {
 
 resource "kubectl_manifest" "gateway_proxy" {
   yaml_body = templatefile("${path.module}/templates/envoyproxy.yaml.tpl", {
+    coraza_config_hash   = local.coraza_config_hash
     lb_name_prefix       = var.lb_name_prefix
     envoy_proxy_replicas = var.envoy_proxy_replicas
     gateway_name         = var.gateway_name

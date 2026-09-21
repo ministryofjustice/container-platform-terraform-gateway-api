@@ -12,6 +12,9 @@ spec:
         replicas: ${envoy_proxy_replicas}
 
         pod:
+          annotations:
+            container-platform.service.justice.gov.uk/coraza-config-hash: "${coraza_config_hash}" # triggers reload of global WAF rules
+
           volumes:
             - name: dynamic-modules
               image:
