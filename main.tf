@@ -20,6 +20,7 @@ resource "kubectl_manifest" "envoy_gateway_instance" {
 
 resource "kubectl_manifest" "gateway_proxy" {
   yaml_body = templatefile("${path.module}/templates/envoyproxy.yaml.tpl", {
+    coraza_config_hash   = local.coraza_config_hash
     lb_name_prefix       = var.lb_name_prefix
     envoy_proxy_replicas = var.envoy_proxy_replicas
     gateway_name         = var.gateway_name
@@ -28,6 +29,8 @@ resource "kubectl_manifest" "gateway_proxy" {
 
   server_side_apply = true
   wait              = true
+
+  depends_on = [kubernetes_config_map_v1.coraza_cp_config]
 }
 
 resource "kubectl_manifest" "default_listenerset" {
@@ -41,6 +44,17 @@ resource "kubectl_manifest" "default_listenerset" {
   wait              = true
 }
 
+# Platform-managed Coraza configuration
+# Allows the platform team to manage global WAF rule exclusions
+resource "kubernetes_config_map_v1" "coraza_cp_config" {
+  metadata {
+    name      = local.coraza_cp_config.metadata.name
+    namespace = local.coraza_cp_config.metadata.namespace
+  }
+
+  data = local.coraza_cp_config.data
+}
+
 # Gateway-level WAF policy with OWASP CRS
 # This applies to ALL routes through the Gateway by default
 # Teams can override this at the HTTPRoute level if needed
@@ -51,4 +65,6 @@ resource "kubernetes_manifest" "default_coraza_waf" {
     gateway_name      = var.gateway_name
     gateway_namespace = local.gateway_namespace
   }))
+
+  depends_on = [kubernetes_config_map_v1.coraza_cp_config]
 }
