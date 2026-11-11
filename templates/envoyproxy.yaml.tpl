@@ -26,6 +26,10 @@ spec:
                 name: coraza-cp-config
 
         container:
+          # Pin the patched Envoy image to remediate the eMudhra CA vulnerability.
+          # The custom EnvoyProxy configuration overrides the default image.
+          # Remove pinned version if future version of default is resolved
+          image: docker.io/envoyproxy/envoy:distroless-v1.38.9        
           env:
             - name: GODEBUG
               value: "cgocheck=0"
